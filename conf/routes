@@ -1,0 +1,70 @@
+
+
+# ~~~~~~~~~~~~~~~~
+# old endpoints
+
+# auth
+POST        /api/auth/login                                               auth.AnonymousAuthController.login
+POST        /api/auth/signup                                              auth.AnonymousAuthController.register
+POST        /api/auth/confirm-account                                     auth.AnonymousAuthController.confirmAccount(token:String)
+POST        /api/auth/reset-password-request                              auth.AnonymousAuthController.resetPasswordRequest
+POST        /api/auth/reset-password-confirmation                         auth.AnonymousAuthController.resetPasswordConfirmation
+POST        /api/auth/facebook                                            auth.AnonymousAuthController.facebook
+POST        /api/auth/logout                                              auth.AuthedAuthController.deleteToken
+GET         /api/auth/account                                             auth.AuthedAuthController.getAccount
+POST        /api/auth/change-password                                     auth.AuthedAuthController.changePassword
+
+
+# profile data
+GET         /api/profile/organizationData                                 auth.ProfileController.getOrganizationData
+POST        /api/profile/organizationData                                 auth.ProfileController.updateOrganizationData
+
+# admin
+GET         /api/admin/users                                              admin.AdminController.usersList
+
+# sale
+POST        /api/sale/invoices                                            sale.controllers.InvoiceController.create
+PUT         /api/sale/invoices/:id                                        sale.controllers.InvoiceController.update(id: sale.model.InvoiceId)
+GET         /api/sale/invoices/:id                                        sale.controllers.InvoiceController.get(id: sale.model.InvoiceId)
+GET         /api/sale/invoices/:id/pdf                                    sale.controllers.InvoiceController.pdf(id: sale.model.InvoiceId)
+GET         /api/sale/invoices                                            sale.controllers.InvoiceController.list
+GET         /api/sale/numberingSeries                                     sale.controllers.NumberingSeriesController.list
+GET         /api/sale/numberingSeries/by-invoice-kind/:invoiceKind        sale.controllers.NumberingSeriesController.listByInvoiceKind(invoiceKind: sale.model.InvoiceKind)
+GET         /api/sale/numberingSeries/:id                                 sale.controllers.NumberingSeriesController.get(id: sale.model.NumberingSeriesId)
+GET         /api/sale/numberingSeries/:id/next-numbers                    sale.controllers.NumberingSeriesController.getNextNumbers(id: sale.model.NumberingSeriesId)
+PUT         /api/sale/numberingSeries/:id/next-numbers                    sale.controllers.NumberingSeriesController.setNextNumbers(id: sale.model.NumberingSeriesId)
+
+
+# contractors
+GET         /api/contractors/autocompleter                                contractors.ContractorsController.autocompleter(term:String)
+POST        /api/contractors                                              contractors.ContractorsController.create
+PUT         /api/contractors/:id                                          contractors.ContractorsController.update(id: contractors.model.ContractorId)
+GET         /api/contractors/:id                                          contractors.ContractorsController.get(id: contractors.model.ContractorId,format: Option[String])
+GET         /api/contractors                                              contractors.ContractorsController.list(sortKey:String, sortReverse: Boolean)
+PUT         /api/contractors/:id/remove                                   contractors.ContractorsController.remove(id: contractors.model.ContractorId)
+
+GET         /api/gus/findCompanyByNip                                     gus.GusController.findCompanyByNip(nip:String, captcha: Option[String], format: String)
+
+# scala defined types
+GET         /api/types/company-forms                                      auth.ProfileController.organizationFormsList
+
+# public resources
+GET         /api/public-documents/:accessCode                             documents.DocumentsController.get(accessCode: String)
+GET         /api/public-documents/:accessCode/html                        documents.DocumentsController.getHtml(accessCode: String)
+
+# invalid calls handler
+GET         /api/*other                                                   index.IndexController.invalidApiCall(other: String)
+
+# assets
+GET         /vassets/*file                                                controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file                                                 controllers.Assets.at(path="/public", file)
+GET         /templates/*file                                              controllers.Assets.at(path="/public/templates", file)
+GET         /images/*file                                                 controllers.Assets.at(path="/public/images", file)
+GET         /webjars/*file                                                controllers.WebJarAssets.at(file)
+
+# index
+GET         /sitemap.xml                                                  controllers.Assets.at(path="/public",file = "sitemap.xml")
+GET         /robots.txt                                                   controllers.Assets.at(path="/public",file = "robots.txt")
+GET         /                                                             index.IndexController.getIndex
+GET         /angularApp.js                                                index.IndexController.getAngularApp
+GET         /*other                                                       index.IndexController.other(other: String)

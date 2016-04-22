@@ -1,0 +1,49 @@
+<div class="well">
+    <h1>Rejestracja</h1>
+
+    <form id="registerForm" name="registerForm">
+        <div class="row">
+            <fieldset class="form-group col-md-12">
+                <label for="email">Adres email</label>
+                <input name="email" id="email" type="email" class="form-control" placeholder="email"
+                       ng-model="ctrl.email" required>
+                   <span class="error"
+                         ng-show="registerForm['email'].$error.required && registerForm['email'].$dirty">
+                                    Pole wymagane</span>
+                   <span class="error"
+                         ng-show="registerForm['email'].$error.email && registerForm['email'].$dirty">
+                                    Niepoprawny adres email</span>
+            </fieldset>
+        </div>
+        <div class="row">
+            <fieldset class="form-group col-md-12">
+                <label for="nip">Nip  (opcjonalnie)</label>
+                <input name="nip" id="nip" type="text" class="form-control" placeholder="Nip"
+                       ng-model="ctrl.nip">
+            </fieldset>
+        </div>
+        <div class="row">
+            <fieldset class="form-group col-md-12">
+                <label for="password">Hasło</label>
+                <input name="password" id="password" type="password" class="form-control" placeholder="password"
+                       ng-model="ctrl.password" required>
+                   <span class="error"
+                         ng-show="registerForm['password'].$error.required && registerForm['password'].$dirty">
+                                    Pole wymagane</span>
+            </fieldset>
+        </div>
+        <div class="row">
+            <fieldset class="form-group col-md-12">
+                <label>
+                    <input type="checkbox" name="terms" id="terms" ng-model="ctrl.terms" required>
+                    Akceptuję warunki <a href="/terms-of-use">regulaminu</a>
+                </label><br>
+                  <span class="error"
+                        ng-show="registerForm['terms'].$error.required && registerForm['terms'].$dirty">
+                                    Akceptacja regulaminu jest wymagana</span>
+            </fieldset>
+        </div>
+        <button class="btn btn-primary" ng-click="ctrl.register(registerForm)">Rejestracja</button>
+        <button class="btn btn-primary" ng-click="ctrl.authenticate('facebook')">Logowanie FB</button>
+    </form>
+</div>

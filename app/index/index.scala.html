@@ -1,0 +1,47 @@
+@(webJarAssets: WebJarAssets)
+<!DOCTYPE html>
+<html ng-app="angularApp" >
+    <head>
+        <base href="/">
+        <title update-title>FaktIt - proste fakturowanie</title>
+        <meta name=”description” content=”fakturowanie, za darmo, proste fakturowanie”>
+        <meta property=”og:image” content=”https://faktit.pl/images/faktit-logo-64.png”/>
+        <meta name="google-site-verification" content="dPjiHXdOp06m4SoQa5wC1oB-Q6XDJLQLMo75ptUI8-4" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" type="image/png" href="/images/faktit-logo-64.png">
+
+        <link rel="stylesheet" href="//bootswatch.com/flatly/bootstrap.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" />
+        <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")" />
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-animate.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
+        <script src="https://cdn.ravenjs.com/2.1.0/angular/raven.min.js"></script>
+        <script>Raven.config('https://bfe3eb456095480184c17c1a53149010@@app.getsentry.com/67637').install();</script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-sanitize.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.8.1/angular-translate.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/satellizer/0.13.3/satellizer.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/js/bootstrap.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-context-menu/1.0.2/ng-context-menu.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.8/angular-filter.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-smart-table/2.1.7/smart-table.min.js"></script>
+        <script src="@routes.WebJarAssets.at(webJarAssets.locate("angular-clipboard.js"))"></script>
+
+        <script src="/angularApp.js"></script>
+        <script src="@routes.Assets.versioned("all.js")"></script>
+
+    </head>
+    <body ng-controller="GlobalController" >
+        <div class="wrapper">
+            @header()
+            @breadcrumbs()
+            @content()
+        <div class="push"></div>
+        </div>
+        @footer()
+    </body>
+</html>

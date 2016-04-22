@@ -1,0 +1,51 @@
+<div class="well">
+    <h1>Lista faktur</h1>
+
+    <div class="datagrid table-responsive">
+        <table st-table="ctrl.invoices" st-pipe="ctrl.load" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Numer</th>
+                <th>Nabywca</th>
+                <th>Data wystawienia</th>
+                <th>Data sprzedaży</th>
+                <th>Wartość netto</th>
+                <th>Wartość brutto</th>
+                <th>Zarządzaj</th>
+            </tr>
+            </thead>
+            <tbody ng-show="!ctrl.isLoading">
+            <tr ng-repeat="row in ctrl.invoices" ng-click="ctrl.edit(row)">
+                <td>{{row.name}}</td>
+                <td>{{row.contractor}}</td>
+                <td>{{row.issueDate | date : 'dd-MM-yyyy'}}</td>
+                <td>{{row.saleDate | date : 'dd-MM-yyyy'}}</td>
+                <td>{{row.netValue | currency: "PLN "}}</td>
+                <td>{{row.grossValue | currency: "PLN "}}</td>
+                <td>
+                    <a class="btn btn-primary" ng-href="/sale/invoices/{{row.id}}" ng-disabled="lockData.status">
+                        Edytuj
+                    </a>
+                    <button class="btn btn-primary" ng-click="ctrl.createSimilar(row);$event.stopPropagation();" ng-disabled="lockData.status">
+                        Utwórz podobną
+                    </button>
+                    <pdf-download url="/api/sale/invoices/{{row.id}}/pdf" ng-click="$event.stopPropagation();"></pdf-download>
+                </td>
+            </tr>
+            </tbody>
+            <tbody ng-show="ctrl.isLoading">
+            <tr>
+                <td colspan="8" class="text-center">Ładowanie danych ...</td>
+            </tr>
+            </tbody>
+            <tbody ng-show="!ctrl.isLoading && (!ctrl.invoices.length)">
+            <tr>
+                <td colspan="8" class="text-center">Brak danych do wyświetlenia</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <a class="btn btn-primary" ng-href="/sale/invoices/add">
+        Nowa faktura
+    </a>
+</div>

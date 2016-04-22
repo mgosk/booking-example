@@ -1,0 +1,28 @@
+<div class="well">
+    <div ng-if="authData.authenticated">
+        <p>Szybkie akcje:</p>
+        <br>
+        <ul>
+            <li><a href="/sale/invoices/add">Wystaw nową fakturę</a></li>
+            <li><a href="/sale/invoices/list">Przeglądaj faktury</a></li>
+            <li><a href="/contractors/list">Zarządzaj kontrahentami</a></li>
+            <li><a href="/profile/organization-data">Uzupełnij dane swojej firmy</a></li>
+        </ul>
+    </div>
+
+    <div ng-if="!authData.authenticated">
+        <br>
+        <p><b>FaktIt</b> to prosty program księgowy który pozwala na wystawianie i przechowywanie faktur. Nasze główne
+            zalety to:</p>
+        <ul>
+            <li>Prosty interfejs</li>
+            <li>Dożywotni brak opłat dla użytkowników którzy zarejestrują się w fazie testów serwisu</li>
+            <li>Bezpieczeństwo twoich danych</li>
+            <li>Brak reklam</li>
+            <li>Integracja z systemem GUS umożliwiająca wyszukiwanie kontrahentów</li>
+        </ul>
+        <br>
+        <a class="btn btn-primary center-block" ng-href="/signup">Korzystaj z FaktIt za darmo</a>
+    </div>
+</div>
+

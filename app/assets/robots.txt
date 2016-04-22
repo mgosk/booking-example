@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /contact
+Allow: /terms-of-use
+Allow: /$
+Disallow: /
+
+Sitemap: https://faktit.pl/sitemap.xml
