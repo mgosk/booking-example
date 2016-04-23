@@ -8,7 +8,8 @@ object ErrorWrapper {
 
   implicit val errorWrapperWrites = Json.writes[ErrorWrapper]
 
-  val notExist = ErrorWrapper("notExist", "Obiekt nie istnieje")
+  def notFound(message: String) = ErrorWrapper("notFound", message)
+
   def invalidJson(e: JsError) = ErrorWrapper("invalidJson", JsError.toJson(e).toString)
 
 }

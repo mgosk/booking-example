@@ -1,12 +1,16 @@
-POST          /hotels                         hotel.HotelController.create
-GET           /hotels                         hotel.HotelController.get(city:String,minPrice:Long,maxPrice:Long)
+# hotels
+POST          /hotels                              hotel.HotelController.create
+GET           /hotels/:id                          hotel.HotelController.get(id:hotel.model.HotelId)
+GET           /hotels                              hotel.HotelController.search(city:String,minPrice:Long,maxPrice:Long)
 
-POST          /hotels/:id/room                hotel.HotelController.addRoom(id:hotel.model.HotelId)
-DELETE        /hotels/:id/room/:roomNr        hotel.HotelController.removeRoom(id:hotel.model.HotelId,roomNr:Int)
-POST          /hotels/make-reservation        hotel.HotelController.makeReservation
+# rooms
+POST          /hotels/:id/room                     hotel.HotelController.addRoom(id:hotel.model.HotelId)
+DELETE        /hotels/:id/room/:roomNr             hotel.HotelController.removeRoom(id:hotel.model.HotelId,roomNr:Int)
+POST          /hotels/make-reservation             hotel.HotelController.makeReservation
 
-POST          /customer                       customer.CustomerController.create
-GET           /customer/:login                customer.CustomerController.reservations(login:String)
+# customer
+POST          /customer                            customer.CustomerController.create
+GET           /customer/:login/reservations        customer.CustomerController.reservations(login:String)
 
-# this endpoint create some test data
-GET           /test-data                   initialize.InitController.testData
+# insert some test data
+GET           /test-data                           initialize.InitController.testData

@@ -23,7 +23,15 @@ class HotelController @Inject()(hotelRepository: HotelRepository)(implicit ec: E
     }
   }
 
-  def get(city: String, minPrice: Long, maxPrice: Long) = Action.async { implicit request =>
+  def get(id: HotelId) = Action.async { implicit request =>
+    hotelRepository.get(id).map {
+      case Some(hotel) => Ok(Json.toJson(hotel))
+      case None => BadRequest(Json.toJson(ErrorWrapper.notFound("Hotel not found")))
+    }
+  }
+
+
+  def search(city: String, minPrice: Long, maxPrice: Long) = Action.async { implicit request =>
     Future.successful(Ok("asd"))
   }
 
@@ -37,7 +45,7 @@ class HotelController @Inject()(hotelRepository: HotelRepository)(implicit ec: E
                 val withNewRoom = hotel.copy(rooms = (hotel.rooms :+ s.get))
                 hotelRepository.update(withNewRoom).map {
                   case Some(updated) => Ok(Json.toJson(withNewRoom))
-                  // case None is impossible here
+                  // None is impossible here
                 }
               case Some(x) =>
                 Future.successful(BadRequest(Json.toJson(ErrorWrapper("alreadyExist", s"Room nr ${s.get.number} already exist"))))
@@ -47,11 +55,23 @@ class HotelController @Inject()(hotelRepository: HotelRepository)(implicit ec: E
       case e: JsError =>
         Future.successful(BadRequest(Json.toJson(ErrorWrapper.invalidJson(e))))
     }
-
   }
 
   def removeRoom(id: HotelId, roomNr: Int) = Action.async { implicit request =>
-    Future.successful(Ok("asd"))
+    hotelRepository.get(id).flatMap {
+      case Some(hotel) =>
+        hotel.rooms.find(_.number == roomNr) match {
+          case None =>
+            Future.successful(BadRequest(Json.toJson(ErrorWrapper("notFound", s"Room nr ${roomNr} not exist"))))
+          case Some(roomToDelete) =>
+            val withoutRoom = hotel.copy(rooms = (hotel.rooms.filter(_.number != roomNr)))
+            hotelRepository.update(withoutRoom).map {
+              case Some(updated) => Ok(Json.toJson(withoutRoom))
+              // None is impossible here
+            }
+        }
+      case None => Future.successful(BadRequest(Json.toJson(ErrorWrapper("notFound", "Hotel not found"))))
+    }
   }
 
   def makeReservation() = Action.async { implicit request =>
