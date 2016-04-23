@@ -1,2 +1,4 @@
-POST        /hotels        hotel.HotelController.create
-GET         /hotels        hotel.HotelController.get(city:String,minPrice:Long,maxPrice:Long)
+POST        /hotels          hotel.HotelController.create
+GET         /hotels          hotel.HotelController.get(city:String,minPrice:Long,maxPrice:Long)
+
+POST        /customer        customer.CustomerController.create
