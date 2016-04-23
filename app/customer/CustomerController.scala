@@ -6,13 +6,14 @@ import com.google.inject.Inject
 import core.ErrorWrapper
 import customer.model.Customer
 import customer.protocol.CreateCustomerRequest
+import hotel.ReservationsService
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.mvc.{Action, Controller}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class CustomerController @Inject()(customerRepository: CustomerRepository)(implicit executionContext: ExecutionContext) extends Controller {
+class CustomerController @Inject() (customerRepository: CustomerRepository, reservationsService: ReservationsService)(implicit executionContext: ExecutionContext) extends Controller {
 
   def create() = Action.async(parse.json) { implicit request =>
     request.body.validate[CreateCustomerRequest] match {
@@ -27,11 +28,11 @@ class CustomerController @Inject()(customerRepository: CustomerRepository)(impli
     }
   }
 
-  //for simplicity sake customer id passed as url param
-  //TODO extract customerId from authorization toker
+  //TODO extract login from authorization token
   def reservations(login: String) = Action.async { implicit request =>
-    Future.successful(Ok("asd"))
+    reservationsService.getForUser(login).map { seq =>
+      Ok(Json.toJson(seq))
+    }
   }
-
 
 }

@@ -1,16 +1,16 @@
 package hotel
 
-import javax.inject.{ Singleton, Inject }
+import javax.inject.{Singleton, Inject}
 import core.ErrorWrapper
-import hotel.model.{ Room, HotelId }
-import hotel.protocol.{ RoomsResponse, CreateHotelRequest }
-import play.api.libs.json.{ Json, JsError, JsSuccess }
-import play.api.mvc.{ Action, Controller }
+import hotel.model.{Reservation, Room, HotelId}
+import hotel.protocol.{RoomsResponse, CreateHotelRequest}
+import play.api.libs.json.{Json, JsError, JsSuccess}
+import play.api.mvc.{Action, Controller}
 
-import scala.concurrent.{ ExecutionContext, Future }
+import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class HotelController @Inject() (hotelRepository: HotelRepository)(implicit ec: ExecutionContext) extends Controller {
+class HotelController @Inject()(hotelRepository: HotelRepository, reservationsService: ReservationsService)(implicit ec: ExecutionContext) extends Controller {
 
   def create() = Action.async(parse.json) { implicit request =>
     request.body.validate[CreateHotelRequest] match {
@@ -79,8 +79,15 @@ class HotelController @Inject() (hotelRepository: HotelRepository)(implicit ec: 
     }
   }
 
-  def makeReservation() = Action.async { implicit request =>
-    Future.successful(Ok("asd"))
+  def makeReservation() = Action.async(parse.json) { implicit request =>
+    request.body.validate[Reservation] match {
+      case s: JsSuccess[Reservation] =>
+        reservationsService.create(s.get).map {
+          case Right(reservation) => Ok(Json.toJson(reservation))
+        }
+      case e: JsError =>
+        Future.successful(BadRequest(Json.toJson(ErrorWrapper.invalidJson(e))))
+    }
   }
 
 }
