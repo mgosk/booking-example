@@ -18,3 +18,10 @@ Go to app directory and type in console `sbt run` or `sbt ~run` for live reloadi
 
 * Room price is constant during year
 * Price is integer
+
+## TODO
+
+* add services layer
+* add realDb
+* write test
+* add authentication & authorization

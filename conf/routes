@@ -1,17 +1,12 @@
-# task 1
 POST          /hotels                         hotel.HotelController.create
-# task 5
 GET           /hotels                         hotel.HotelController.get(city:String,minPrice:Long,maxPrice:Long)
 
-# task 3
 POST          /hotels/:id/room                hotel.HotelController.addRoom(id:hotel.model.HotelId)
-# task 4
 DELETE        /hotels/:id/room/:roomNr        hotel.HotelController.removeRoom(id:hotel.model.HotelId,roomNr:Int)
-# task 6
 POST          /hotels/make-reservation        hotel.HotelController.makeReservation
 
-
-# task 2
 POST          /customer                       customer.CustomerController.create
-# task 9
 GET           /customer/:login                customer.CustomerController.reservations(login:String)
+
+# this endpoint create some test data
+GET           /test-data                   initialize.InitController.testData
