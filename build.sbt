@@ -6,7 +6,6 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala).enablePlugins(De
 
 scalaVersion := "2.11.8"
 incOptions := incOptions.value.withNameHashing(true)
-updateOptions := updateOptions.value.withCachedResolution(cachedResoluton = true)
 
 libraryDependencies ++= Seq(
   jdbc,
