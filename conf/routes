@@ -1,11 +1,11 @@
 # hotels
 POST          /hotels                              hotel.HotelController.create
 GET           /hotels/:id                          hotel.HotelController.get(id:hotel.model.HotelId)
-GET           /hotels                              hotel.HotelController.search(city:String,minPrice:Long,maxPrice:Long)
 
 # rooms
 POST          /hotels/:id/room                     hotel.HotelController.addRoom(id:hotel.model.HotelId)
 DELETE        /hotels/:id/room/:roomNr             hotel.HotelController.removeRoom(id:hotel.model.HotelId,roomNr:Int)
+GET           /rooms                               hotel.HotelController.search(city:String,minPrice:Option[Long],maxPrice:Option[Long])
 POST          /hotels/make-reservation             hotel.HotelController.makeReservation
 
 # customer

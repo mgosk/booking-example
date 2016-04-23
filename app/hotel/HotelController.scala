@@ -1,16 +1,16 @@
 package hotel
 
-import javax.inject.{Singleton, Inject}
+import javax.inject.{ Singleton, Inject }
 import core.ErrorWrapper
-import hotel.model.{Room, HotelId}
-import hotel.protocol.CreateHotelRequest
-import play.api.libs.json.{Json, JsError, JsSuccess}
-import play.api.mvc.{Action, Controller}
+import hotel.model.{ Room, HotelId }
+import hotel.protocol.{ RoomsResponse, CreateHotelRequest }
+import play.api.libs.json.{ Json, JsError, JsSuccess }
+import play.api.mvc.{ Action, Controller }
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
-class HotelController @Inject()(hotelRepository: HotelRepository)(implicit ec: ExecutionContext) extends Controller {
+class HotelController @Inject() (hotelRepository: HotelRepository)(implicit ec: ExecutionContext) extends Controller {
 
   def create() = Action.async(parse.json) { implicit request =>
     request.body.validate[CreateHotelRequest] match {
@@ -30,9 +30,14 @@ class HotelController @Inject()(hotelRepository: HotelRepository)(implicit ec: E
     }
   }
 
-
-  def search(city: String, minPrice: Long, maxPrice: Long) = Action.async { implicit request =>
-    Future.successful(Ok("asd"))
+  def search(city: String, minPrice: Option[Long], maxPrice: Option[Long]) = Action.async { implicit request =>
+    hotelRepository.searchForRooms(city, minPrice, maxPrice).map { pairs =>
+      val response: Seq[RoomsResponse] = pairs.map {
+        case (hid: HotelId, rooms: Seq[Room]) =>
+          rooms.map { room => RoomsResponse(hid, room.number, room.price) }
+      }.flatten.toSeq
+      Ok(Json.toJson(response))
+    }
   }
 
   def addRoom(id: HotelId) = Action.async(parse.json) { implicit request =>

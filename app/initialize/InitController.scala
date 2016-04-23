@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import customer.CustomerRepository
 import customer.model.Customer
 import hotel.HotelRepository
-import hotel.model.{HotelId, Hotel}
+import hotel.model.{Room, HotelId, Hotel}
 import play.api.mvc.{Action, Controller}
 
 import scala.concurrent.ExecutionContext
@@ -14,7 +14,7 @@ class InitController @Inject()(customerRepository: CustomerRepository, hotelRepo
   def testData() = Action.async { implicit request =>
     val customer1 = Customer("Bob")
     val customer2 = Customer("Alice")
-    val hotel1 = Hotel(HotelId.random, "Hilton", "Warsaw", Seq())
+    val hotel1 = Hotel(HotelId.random, "Hilton", "Warsaw", Seq(Room(101, 66)))
     val hotel2 = Hotel(HotelId.random, "Mariot", "Warsaw", Seq())
     for {
       c1 <- customerRepository.create(customer1)

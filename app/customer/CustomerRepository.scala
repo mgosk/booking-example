@@ -5,6 +5,7 @@ import customer.model.Customer
 
 import scala.concurrent.Future
 
+// function bodies are wrapped in Future.successful to easy be replaced by reactive database driver
 @Singleton
 class CustomerRepository {
 
