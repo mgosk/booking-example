@@ -2,7 +2,7 @@ package core
 
 import play.api.libs.json.{JsError, Json}
 
-case class ErrorWrapper(code: String, message: String, serviceable: Boolean = false)
+case class ErrorWrapper(code: String, message: String)
 
 object ErrorWrapper {
 

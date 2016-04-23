@@ -3,7 +3,7 @@ package hotel.model
 import hotel.protocol.CreateHotelRequest
 import play.api.libs.json.Json
 
-case class Hotel(id: HotelId, name: String)
+case class Hotel(id: HotelId, name:String, city: String, rooms: Seq[Room])
 
 object Hotel {
 
@@ -11,6 +11,8 @@ object Hotel {
 
   implicit def fromRequest(hotel: CreateHotelRequest) = Hotel(
     id = HotelId.random,
-    name = hotel.name)
+    name = hotel.name,
+    city = hotel.city,
+    rooms = Seq.empty[Room])
 
 }

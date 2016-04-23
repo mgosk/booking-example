@@ -1,25 +1,17 @@
 package customer
 
-import com.google.inject.{ImplementedBy, Singleton}
-import customer.model.{Customer, CustomerId}
+import com.google.inject.Singleton
+import customer.model.Customer
 
 import scala.concurrent.Future
 
-@ImplementedBy(classOf[CustomerRepositoryImpl])
-trait CustomerRepository {
-
-  def create(Customer: Customer): Future[Customer]
-
-}
-
 @Singleton
-class CustomerRepositoryImpl extends CustomerRepository {
+class CustomerRepository {
 
-  val collection = scala.collection.mutable.Map.empty[CustomerId, Customer]
+  var set = scala.collection.mutable.Set[Customer]()
 
-  def create(Customer: Customer): Future[Customer] = Future.successful {
-    collection += (Customer.id -> Customer)
-    Customer
+  def create(customer: Customer): Future[Boolean] = Future.successful {
+    set add customer
   }
 
 }
