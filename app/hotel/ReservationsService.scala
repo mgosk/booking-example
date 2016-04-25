@@ -4,13 +4,13 @@ import javax.inject.Inject
 
 import com.google.inject.Singleton
 import core.ErrorWrapper
-import customer.CustomerRepository
+import customer.CustomersRepository
 import hotel.model.Reservation
 
 import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
-class ReservationsService @Inject() (reservationsRepository: ReservationsRepository, customerRepository: CustomerRepository, hotelRepository: HotelRepository)(implicit executionContext: ExecutionContext) {
+class ReservationsService @Inject()(reservationsRepository: ReservationsRepository, customerRepository: CustomersRepository, hotelRepository: HotelsRepository)(implicit executionContext: ExecutionContext) {
 
   def create(reservation: Reservation): Future[Either[ErrorWrapper, Reservation]] = {
     customerRepository.find(reservation.login).flatMap {

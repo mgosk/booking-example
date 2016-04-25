@@ -7,7 +7,7 @@ import scala.concurrent.Future
 
 // function bodies are wrapped in Future.successful to easy be replaced by reactive database driver
 @Singleton
-class HotelRepository {
+class HotelsRepository {
 
   val collection = scala.collection.mutable.Map.empty[HotelId, Hotel]
 

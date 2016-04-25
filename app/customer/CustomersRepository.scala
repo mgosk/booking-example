@@ -7,7 +7,7 @@ import scala.concurrent.Future
 
 // function bodies are wrapped in Future.successful to easy be replaced by reactive database driver
 @Singleton
-class CustomerRepository {
+class CustomersRepository {
 
   var set = scala.collection.mutable.Set[Customer]()
 
