@@ -84,6 +84,7 @@ class HotelController @Inject()(hotelRepository: HotelRepository, reservationsSe
       case s: JsSuccess[Reservation] =>
         reservationsService.create(s.get).map {
           case Right(reservation) => Ok(Json.toJson(reservation))
+          case Left(error) => BadRequest(Json.toJson(error))
         }
       case e: JsError =>
         Future.successful(BadRequest(Json.toJson(ErrorWrapper.invalidJson(e))))

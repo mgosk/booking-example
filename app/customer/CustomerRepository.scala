@@ -15,4 +15,8 @@ class CustomerRepository {
     set add customer
   }
 
+  def find(login: String) = Future.successful {
+    set.find(_.login == login)
+  }
+
 }
