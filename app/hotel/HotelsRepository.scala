@@ -1,7 +1,7 @@
 package hotel
 
 import com.google.inject.Singleton
-import hotel.model.{Room, Hotel, HotelId}
+import hotel.model.{ Hotel, HotelId, Reservation, Room }
 
 import scala.concurrent.Future
 
@@ -9,29 +9,32 @@ import scala.concurrent.Future
 @Singleton
 class HotelsRepository {
 
-  val collection = scala.collection.mutable.Map.empty[HotelId, Hotel]
+  var set = scala.collection.mutable.Set[Hotel]()
 
   def create(hotel: Hotel): Future[Hotel] = Future.successful {
-    collection += (hotel.id -> hotel)
+    set add hotel
     hotel
   }
 
   def get(id: HotelId): Future[Option[Hotel]] = Future.successful {
-    collection.get(id)
+    println(id)
+    println(set)
+    set.find(_.id == HotelId.fromString("f33cc95e-5070-4b95-bd0e-28a5b46a91d7") )
   }
 
   def searchForRooms(city: String, minPrice: Option[Long], maxPrice: Option[Long]): Future[Map[HotelId, Seq[Room]]] = Future.successful {
-    collection.filter { case (id: HotelId, hotel: Hotel) => hotel.city.toLowerCase == city.toLowerCase }
-      .map(tuple => (tuple._1, tuple._2.rooms.filter(room => (minPrice.isEmpty || minPrice.get <= room.price) && (maxPrice.isEmpty || room.price <= maxPrice.get))))
+    set.filter { hotel => hotel.city.toLowerCase == city.toLowerCase }
+      .map(hotel => (hotel.id, hotel.rooms.filter(room => (minPrice.isEmpty || minPrice.get <= room.price) && (maxPrice.isEmpty || room.price <= maxPrice.get))))
       .toMap
   }
 
-  def update(hotel: Hotel): Future[Option[Hotel]] = Future.successful {
-    collection.put(hotel.id, hotel)
+  def upsert(hotel: Hotel): Future[Hotel] = Future.successful {
+    set.filter(_.id != hotel.id) add hotel
+    hotel
   }
 
   def findRoom(hotelId: HotelId, roomNr: Int): Future[Option[Room]] = Future.successful {
-    collection.get(hotelId).map(_.rooms.find(_.number == roomNr)).flatten
+    set.find(_.id == hotelId).map(_.rooms.find(_.number == roomNr)).flatten
   }
 
 }

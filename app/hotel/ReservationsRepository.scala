@@ -15,8 +15,6 @@ class ReservationsRepository {
 
   def create(reservation: Reservation): Future[Boolean] = Future.successful {
     set add reservation
-    println(set)
-    true
   }
 
   def getForUser(login: String): Future[Seq[Reservation]] = Future.successful {
@@ -25,6 +23,10 @@ class ReservationsRepository {
 
   def checkForConflicts(hotelId: HotelId, roomNr: Int, dateFrom: Date, dateTo: Date): Future[Option[Reservation]] = Future.successful {
     set.find(res => res.hotelId == hotelId && res.roomNr == roomNr && !(dateTo.before(res.dateFrom) || dateFrom.after(res.dateTo)))
+  }
+
+  def isReservationExist(hotelId: HotelId, roomNr: Int): Future[Boolean] = Future.successful {
+    set.find(res => res.hotelId == hotelId && res.roomNr == roomNr).isDefined
   }
 
 }

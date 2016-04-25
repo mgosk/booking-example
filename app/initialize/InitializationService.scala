@@ -2,17 +2,17 @@ package initialize
 
 import java.text.SimpleDateFormat
 
-import com.google.inject.{ Inject, Singleton }
-import customer.CustomersRepository
+import com.google.inject.{Inject, Singleton}
+import customer.{CustomersRepository, CustomersService}
 import customer.model.Customer
-import hotel.model.{ Hotel, HotelId, Reservation, Room }
-import hotel.{ HotelsRepository, ReservationsService }
+import hotel.model.{Hotel, HotelId, Reservation, Room}
+import hotel.{HotelsRepository, HotelsService, ReservationsService}
 import play.api.Logger
 
 import scala.concurrent.ExecutionContext
 
 @Singleton
-class InitializationService @Inject()(customerRepository: CustomersRepository, hotelRepository: HotelsRepository, reservationsService: ReservationsService)(implicit executionContext: ExecutionContext) {
+class InitializationService @Inject()(hotelsService: HotelsService, reservationsService: ReservationsService,customersService: CustomersService)(implicit executionContext: ExecutionContext) {
 
   val df = new SimpleDateFormat("yyyy-MM-dd")
 
@@ -26,12 +26,12 @@ class InitializationService @Inject()(customerRepository: CustomersRepository, h
   val reservation2 = Reservation(HotelId.fromString("f33cc95e-5070-4b95-bd0e-28a5b46a91d7"), 101, df.parse("2016-03-31"), df.parse("2016-04-15"), "Bob")
 
   for {
-    c1 <- customerRepository.create(customer1)
-    c2 <- customerRepository.create(customer2)
-    c3 <- customerRepository.create(customer3)
-    h1 <- hotelRepository.create(hotel1)
-    h2 <- hotelRepository.create(hotel2)
-    h3 <- hotelRepository.create(hotel3)
+    c1 <- customersService.create(customer1)
+    c2 <- customersService.create(customer2)
+    c3 <- customersService.create(customer3)
+    h1 <- hotelsService.create(hotel1)
+    h2 <- hotelsService.create(hotel2)
+    h3 <- hotelsService.create(hotel3)
     r1 <- reservationsService.create(reservation1)
     r2 <- reservationsService.create(reservation2)
   } yield {

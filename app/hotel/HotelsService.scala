@@ -4,13 +4,11 @@ import com.google.inject.{ Inject, Singleton }
 import core.ErrorWrapper
 import hotel.model.{ Hotel, HotelId, Room }
 import hotel.protocol.RoomsResponse
-import play.api.libs.json.Json
-import play.api.mvc.Action
 
 import scala.concurrent.{ ExecutionContext, Future }
 
 @Singleton
-class HotelsService @Inject() (hotelsRepository: HotelsRepository)(implicit executionContext: ExecutionContext) {
+class HotelsService @Inject() (hotelsRepository: HotelsRepository, reservationsRepository: ReservationsRepository)(implicit executionContext: ExecutionContext) {
 
   def create(hotel: Hotel): Future[Hotel] = {
     hotelsRepository.create(hotel)
@@ -35,10 +33,7 @@ class HotelsService @Inject() (hotelsRepository: HotelsRepository)(implicit exec
         hotel.rooms.find(room => room.number == room.number) match {
           case None =>
             val withNewRoom = hotel.copy(rooms = (hotel.rooms :+ room))
-            hotelsRepository.update(withNewRoom).map {
-              case Some(updated) => Right(withNewRoom)
-              case None => throw new RuntimeException()
-            }
+            hotelsRepository.upsert(withNewRoom).map(Right(_))
           case Some(x) =>
             Future.successful(Left(ErrorWrapper("alreadyExist", s"Room nr ${room.number} already exist")))
         }
@@ -53,12 +48,15 @@ class HotelsService @Inject() (hotelsRepository: HotelsRepository)(implicit exec
           case None =>
             Future.successful(Left(ErrorWrapper("notFound", s"Room nr ${roomNr} not exist")))
           case Some(roomToDelete) =>
-            val withoutRoom = hotel.copy(rooms = (hotel.rooms.filter(_.number != roomNr)))
-            hotelsRepository.update(withoutRoom).map {
-              case Some(updated) => Right(withoutRoom)
-              case None => throw new RuntimeException()
+            reservationsRepository.isReservationExist(id, roomNr).flatMap {
+              case false =>
+                val withoutRoom = hotel.copy(rooms = (hotel.rooms.filter(_.number != roomNr)))
+                hotelsRepository.upsert(withoutRoom).map(Right(_))
+              case true =>
+                Future.successful(Left(ErrorWrapper("reservationsExist", s"Can't delete room. Room have active reservations")))
             }
         }
+      case None =>
         Future.successful(Left(ErrorWrapper("notFound", s"Hotel not found")))
     }
   }
