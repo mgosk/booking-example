@@ -21,11 +21,10 @@ Go to app directory and type in console `sbt run` or `sbt ~run` for live reloadi
 
 ## TODO
 
-* add services layer
-* attach production database (mongo ?)
-* tests
+* attach production database (mongoDB?)
+* unit tests
 * add authentication & authorization
 * API docs
-* secure transactions
+* guarantee operation atomicity
 * include copy of reservation into room to accelerate search
 * use joda Datetime instead java Date
