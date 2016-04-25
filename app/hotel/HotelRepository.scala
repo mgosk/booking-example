@@ -1,7 +1,7 @@
 package hotel
 
 import com.google.inject.Singleton
-import hotel.model.{ Room, Hotel, HotelId }
+import hotel.model.{Room, Hotel, HotelId}
 
 import scala.concurrent.Future
 
@@ -29,4 +29,10 @@ class HotelRepository {
   def update(hotel: Hotel): Future[Option[Hotel]] = Future.successful {
     collection.put(hotel.id, hotel)
   }
+
+  def findRoom(hotelId: HotelId, roomNr: Int): Future[Option[Room]] = Future.successful {
+    collection.get(hotelId).map(_.rooms.find(_.number == roomNr)).flatten
+  }
+
 }
+

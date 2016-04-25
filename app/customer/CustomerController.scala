@@ -30,7 +30,7 @@ class CustomerController @Inject() (customerRepository: CustomerRepository, rese
 
   //TODO extract login from authorization token
   def reservations(login: String) = Action.async { implicit request =>
-    reservationsService.getForUser(login).map { seq =>
+    reservationsService.getReservationsForUser(login).map { seq =>
       Ok(Json.toJson(seq))
     }
   }
