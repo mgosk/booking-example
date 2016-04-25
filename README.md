@@ -10,14 +10,11 @@
 
 Go to app directory and type in console `sbt run` or `sbt ~run` for live reloading
 
-## Developer notes
-
-* Objects identifiers are implemented as UUID's because we don't know further DB implementation
-
-## To made it simple I assume that:
+## To made it simpler I assume that:
 
 * Room price is constant during year
 * Price is integer
+* Admin can't delete room with reservations
 
 ## TODO
 
