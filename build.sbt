@@ -32,7 +32,7 @@ resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 resolvers += "Pellucid Bintray" at "http://dl.bintray.com/pellucid/maven"
 resolvers += Resolver.sonatypeRepo("releases")
 
-
+routesImport += "core.Binders._"
 routesGenerator := InjectedRoutesGenerator
 
 //packager conf

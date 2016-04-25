@@ -1,7 +1,7 @@
 package hotel
 
 import com.google.inject.Singleton
-import hotel.model.{ Hotel, HotelId, Reservation, Room }
+import hotel.model.{Hotel, HotelId, Room}
 
 import scala.concurrent.Future
 

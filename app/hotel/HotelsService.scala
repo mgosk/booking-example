@@ -1,11 +1,14 @@
 package hotel
 
+import java.util.Date
+
 import com.google.inject.{ Inject, Singleton }
 import core.ErrorWrapper
 import hotel.model.{ Hotel, HotelId, Room }
 import hotel.protocol.RoomsResponse
 
 import scala.concurrent.{ ExecutionContext, Future }
+import scala.util.{ Failure, Success, Try }
 
 @Singleton
 class HotelsService @Inject() (hotelsRepository: HotelsRepository, reservationsRepository: ReservationsRepository)(implicit executionContext: ExecutionContext) {
@@ -18,12 +21,19 @@ class HotelsService @Inject() (hotelsRepository: HotelsRepository, reservationsR
     hotelsRepository.get(id)
   }
 
-  def searchForRoom(city: String, minPrice: Option[Long], maxPrice: Option[Long]): Future[Seq[RoomsResponse]] = {
-    hotelsRepository.searchForRooms(city, minPrice, maxPrice).map { pairs =>
-      pairs.map {
+  def searchForRoom(city: String, minPrice: Option[Long], maxPrice: Option[Long], dateFrom: Date, dateTo: Date): Future[Seq[RoomsResponse]] = {
+    hotelsRepository.searchForRooms(city, minPrice, maxPrice).flatMap { pairs =>
+      val rooms = pairs.map {
         case (hid: HotelId, rooms: Seq[Room]) =>
           rooms.map { room => RoomsResponse(hid, room.number, room.price) }
       }.flatten.toSeq
+      val filtered = rooms.map { room =>
+        reservationsRepository.checkForConflicts(room.hotelId, room.roomNr, dateFrom, dateTo).map {
+          case Some(res) => None
+          case None => Some(room)
+        }
+      }
+      Future.sequence(filtered).map { _.flatten }
     }
   }
 

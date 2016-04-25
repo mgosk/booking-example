@@ -1,10 +1,12 @@
 package hotel
 
-import javax.inject.{ Singleton, Inject }
+import java.util.Date
+import javax.inject.{ Inject, Singleton }
+
 import core.ErrorWrapper
-import hotel.model.{ Reservation, Room, HotelId }
-import hotel.protocol.{ RoomsResponse, CreateHotelRequest }
-import play.api.libs.json.{ Json, JsError, JsSuccess }
+import hotel.model.{ HotelId, Reservation, Room }
+import hotel.protocol.{ CreateHotelRequest, RoomsResponse }
+import play.api.libs.json.{ JsError, JsSuccess, Json }
 import play.api.mvc.{ Action, Controller }
 
 import scala.concurrent.{ ExecutionContext, Future }
@@ -30,8 +32,8 @@ class HotelsController @Inject() (reservationsService: ReservationsService, hote
     }
   }
 
-  def search(city: String, minPrice: Option[Long], maxPrice: Option[Long]) = Action.async { implicit request =>
-    hotelsService.searchForRoom(city, minPrice, maxPrice).map { seq =>
+  def search(city: String, minPrice: Option[Long], maxPrice: Option[Long], dateFrom: Date, dateTo: Date) = Action.async { implicit request =>
+    hotelsService.searchForRoom(city, minPrice, maxPrice, dateFrom, dateTo).map { seq =>
       Ok(Json.toJson(seq))
     }
   }

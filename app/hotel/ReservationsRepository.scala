@@ -3,7 +3,7 @@ package hotel
 import java.util.Date
 
 import com.google.inject.Singleton
-import hotel.model.{HotelId, Reservation}
+import hotel.model.{ HotelId, Reservation }
 
 import scala.concurrent.Future
 
