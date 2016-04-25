@@ -11,6 +11,3 @@ POST          /hotels/make-reservation             hotel.HotelController.makeRes
 # customer
 POST          /customer                            customer.CustomerController.create
 GET           /customer/:login/reservations        customer.CustomerController.reservations(login:String)
-
-# insert some test data
-GET           /test-data                           initialize.InitController.testData
